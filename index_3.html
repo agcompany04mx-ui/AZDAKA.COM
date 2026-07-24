@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AZDAKA Logística — Envíos rápidos y seguros</title>
+  <meta name="description" content="Envíos nacionales e internacionales con rapidez, seguridad y seguimiento. AZDAKA Logística, tu aliado estratégico en transporte y distribución." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black:  #0A0A0A;
+      --dark:   #111111;
+      --card:   #161616;
+      --border: rgba(255,255,255,0.07);
+      --orange: #F5A623;
+      --white:  #FFFFFF;
+      --gray:   #888888;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--white); background: var(--black); overflow-x: hidden; }
+
+    /* SCROLL ANIMATIONS */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.delay-1 { transition-delay: 0.1s; }
+    .reveal.delay-2 { transition-delay: 0.22s; }
+    .reveal.delay-3 { transition-delay: 0.34s; }
+    .reveal.delay-4 { transition-delay: 0.46s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-44px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(44px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* NAV */
+    nav { position: fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:0 5vw; height:68px; background:rgba(10,10,10,0.93); backdrop-filter:blur(14px); border-bottom:1px solid var(--border); }
+    .nav-logo img { height:44px; display:block; }
+    .nav-links { display:flex; gap:2.25rem; list-style:none; }
+    .nav-links a { color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.8rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; transition:color 0.2s; }
+    .nav-links a:hover { color:var(--white); }
+    .nav-cta { background:var(--orange) !important; color:var(--black) !important; font-weight:700 !important; padding:0.5rem 1.2rem; border-radius:3px; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+    .hamburger span { display:block; width:22px; height:1.5px; background:var(--white); transition:0.3s; }
+
+    /* HERO */
+    .hero { position:relative; height:100vh; min-height:600px; display:flex; align-items:center; overflow:hidden; }
+    .hero-bg { position:absolute; inset:0; background-image:url('https://static.wixstatic.com/media/968ef8_84851fedbc234826911e5b6eee324f04f000.jpg/v1/fill/w_1920,h_1080,al_c,q_85,usm_0.33_1.00_0.00,enc_avif,quality_auto/968ef8_84851fedbc234826911e5b6eee324f04f000.jpg'); background-size:cover; background-position:center; filter:brightness(0.2); transform:scale(1.05); animation:heroZoom 14s ease-out forwards; }
+    @keyframes heroZoom { to { transform:scale(1); } }
+    .hero-bg::after { content:''; position:absolute; inset:0; background:linear-gradient(to right, rgba(10,10,10,0.92) 45%, transparent 100%); }
+    .hero-accent { position:absolute; left:calc(5vw - 20px); top:50%; transform:translateY(-50%); width:2px; height:0; background:var(--orange); animation:accentGrow 0.9s 0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
+    @keyframes accentGrow { to { height:140px; } }
+    .hero-content { position:relative; z-index:1; padding:0 5vw; max-width:800px; }
+    .hero-eyebrow { display:inline-flex; align-items:center; gap:0.6rem; font-size:0.72rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--orange); margin-bottom:1.5rem; opacity:0; animation:fadeUp 0.7s 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .hero h1 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(3.5rem,8.5vw,7.5rem); font-weight:900; line-height:0.92; color:var(--white); text-transform:uppercase; margin-bottom:1.75rem; opacity:0; animation:fadeUp 0.8s 0.65s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .hero h1 em { font-style:normal; color:var(--orange); display:block; }
+    .hero-sub { font-size:1rem; color:rgba(255,255,255,0.55); max-width:420px; line-height:1.85; margin-bottom:2.5rem; font-weight:300; opacity:0; animation:fadeUp 0.8s 0.8s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .hero-actions { display:flex; gap:1rem; flex-wrap:wrap; opacity:0; animation:fadeUp 0.8s 0.95s cubic-bezier(0.16,1,0.3,1) forwards; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+    .btn-primary { background:var(--orange); color:var(--black); font-weight:700; font-size:0.82rem; letter-spacing:0.08em; text-transform:uppercase; padding:0.9rem 2.2rem; border-radius:3px; text-decoration:none; transition:opacity 0.2s,transform 0.2s; }
+    .btn-primary:hover { opacity:0.88; transform:translateY(-2px); }
+    .btn-ghost { background:transparent; color:var(--white); font-weight:500; font-size:0.82rem; letter-spacing:0.08em; text-transform:uppercase; padding:0.9rem 2.2rem; border-radius:3px; border:1px solid rgba(255,255,255,0.18); text-decoration:none; transition:border-color 0.2s,color 0.2s,transform 0.2s; }
+    .btn-ghost:hover { border-color:var(--orange); color:var(--orange); transform:translateY(-2px); }
+    .scroll-hint { position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%); z-index:1; display:flex; flex-direction:column; align-items:center; gap:0.5rem; color:rgba(255,255,255,0.25); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; opacity:0; animation:fadeIn 1s 1.6s forwards; }
+    @keyframes fadeIn { to{opacity:1} }
+    .scroll-hint::after { content:''; width:1px; height:48px; background:linear-gradient(to bottom,var(--orange),transparent); animation:pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+
+    /* STATS */
+    .stats-bar { background:var(--dark); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:0 5vw; display:grid; grid-template-columns:repeat(3,1fr); position:relative; overflow:hidden; }
+    .stats-bar::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; background:var(--orange); }
+    .stat-item { text-align:center; padding:2.75rem 1rem; border-right:1px solid var(--border); }
+    .stat-item:last-child { border-right:none; }
+    .stat-number { font-family:'Barlow Condensed',sans-serif; font-size:3.2rem; font-weight:900; color:var(--orange); line-height:1; display:block; }
+    .stat-label { font-size:0.72rem; font-weight:500; color:var(--gray); letter-spacing:0.1em; text-transform:uppercase; margin-top:0.4rem; }
+
+    /* SHARED */
+    .section-eyebrow { display:inline-flex; align-items:center; gap:0.6rem; font-size:0.7rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--orange); margin-bottom:1rem; }
+    .section-eyebrow::before { content:''; display:block; width:24px; height:1.5px; background:var(--orange); }
+    .section-title { font-family:'Barlow Condensed',sans-serif; font-size:clamp(2.2rem,5vw,3.8rem); font-weight:900; text-transform:uppercase; line-height:1.0; color:var(--white); }
+
+    /* ABOUT */
+    .about { padding:7rem 5vw; display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:center; max-width:1280px; margin:0 auto; }
+    .about-text .section-title { margin-bottom:1.75rem; }
+    .about-text p { font-size:0.95rem; color:var(--gray); line-height:1.9; margin-bottom:1rem; font-weight:300; }
+    .about-text p:last-of-type { margin-bottom:2.5rem; }
+    .about-divider { width:100%; height:1px; background:var(--border); margin:1.5rem 0 2rem; overflow:hidden; }
+    .about-divider-line { height:1px; width:0; background:var(--orange); transition:width 1.1s cubic-bezier(0.16,1,0.3,1); }
+    .about-divider-line.visible { width:100%; }
+    .about-image { position:relative; }
+    .about-image img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; filter:grayscale(25%) brightness(0.9); transition:filter 0.5s; }
+    .about-image:hover img { filter:grayscale(0%) brightness(1); }
+    .about-image::before,.about-image::after { content:''; position:absolute; width:30px; height:30px; border-color:var(--orange); border-style:solid; }
+    .about-image::before { top:-10px;left:-10px; border-width:2px 0 0 2px; }
+    .about-image::after  { bottom:-10px;right:-10px; border-width:0 2px 2px 0; }
+
+    /* SERVICES */
+    .services { background:var(--dark); padding:7rem 5vw; border-top:1px solid var(--border); }
+    .services-inner { max-width:1280px; margin:0 auto; }
+    .services-header { margin-bottom:4rem; }
+    .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); }
+    .service-card { background:var(--card); overflow:hidden; position:relative; transition:background 0.3s; }
+    .service-card:hover { background:#1c1c1c; }
+    .service-card-img-wrap { overflow:hidden; aspect-ratio:16/9; }
+    .service-card-img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.65s cubic-bezier(0.16,1,0.3,1),filter 0.4s; filter:grayscale(35%) brightness(0.8); }
+    .service-card:hover .service-card-img { transform:scale(1.06); filter:grayscale(0%) brightness(1); }
+    .service-card-body { padding:1.75rem; }
+    .service-number { font-family:'Barlow Condensed',sans-serif; font-size:0.75rem; font-weight:700; letter-spacing:0.15em; color:var(--orange); margin-bottom:0.6rem; }
+    .service-card-body h3 { font-family:'Barlow Condensed',sans-serif; font-size:1.55rem; font-weight:800; color:var(--white); text-transform:uppercase; margin-bottom:0.6rem; line-height:1.1; }
+    .service-card-body p { font-size:0.875rem; color:var(--gray); line-height:1.7; font-weight:300; }
+    .service-card::after { content:''; position:absolute; bottom:0;left:0; height:2px; width:0; background:var(--orange); transition:width 0.4s cubic-bezier(0.16,1,0.3,1); }
+    .service-card:hover::after { width:100%; }
+
+    /* MARQUEE */
+    .marquee-wrap { background:var(--orange); padding:0.9rem 0; overflow:hidden; white-space:nowrap; }
+    .marquee-track { display:inline-flex; animation:marqueeScroll 20s linear infinite; }
+    .marquee-item { font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--black); padding:0 2.5rem; }
+    .marquee-dot { color:rgba(0,0,0,0.3); padding:0 0.4rem; }
+    @keyframes marqueeScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* TESTIMONIAL CAROUSEL */
+    .testimonial { padding:8rem 5vw; overflow:hidden; }
+    .testimonial-header { text-align:center; margin-bottom:4rem; }
+    .testimonial-track-wrap { max-width:960px; margin:0 auto; position:relative; }
+    .testimonial-track { position:relative; min-height:260px; }
+    .t-slide { position:absolute; top:0; left:0; width:100%; text-align:center; opacity:0; transform:translateX(40px); transition:opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1); pointer-events:none; }
+    .t-slide.active { opacity:1; transform:translateX(0); pointer-events:auto; position:relative; }
+    .t-slide.exit-left { opacity:0; transform:translateX(-40px); }
+    .quote-mark { font-family:'Barlow Condensed',sans-serif; font-size:8rem; font-weight:900; color:rgba(245,166,35,0.07); line-height:0.5; display:block; margin-bottom:0.5rem; }
+    .t-slide blockquote { font-family:'Barlow Condensed',sans-serif; font-size:clamp(1.5rem,3vw,2.4rem); font-weight:700; color:var(--white); line-height:1.25; text-transform:uppercase; margin-bottom:2rem; }
+    .t-slide blockquote em { font-style:normal; color:var(--orange); }
+    .t-author { display:flex; align-items:center; justify-content:center; gap:1rem; margin-bottom:3rem; }
+    .t-line { width:40px; height:1px; background:rgba(255,255,255,0.15); }
+    .t-name { font-size:0.75rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--orange); }
+    .t-dots { display:flex; justify-content:center; gap:0.6rem; }
+    .t-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.15); cursor:pointer; transition:background 0.3s, transform 0.3s; border:none; padding:0; }
+    .t-dot.active { background:var(--orange); transform:scale(1.3); }
+    /* progress bar */
+    .t-progress { height:1px; background:rgba(255,255,255,0.07); margin-bottom:2.5rem; overflow:hidden; }
+    .t-progress-bar { height:100%; background:var(--orange); width:0; transition:none; }
+    .t-progress-bar.running { transition:width 4s linear; width:100%; }
+
+    /* CONTACT */
+    .contact-section { background:var(--dark); border-top:1px solid var(--border); padding:7rem 5vw; }
+    .contact-inner { max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 1.3fr; gap:6rem; align-items:start; }
+    .contact-info .section-title { margin-bottom:2rem; }
+    .contact-detail { display:flex; align-items:flex-start; gap:1rem; margin-bottom:1.5rem; }
+    .c-icon { width:40px; height:40px; border:1px solid rgba(245,166,35,0.4); border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+    .c-text { font-size:0.9rem; color:var(--gray); line-height:1.6; }
+    .c-text strong { display:block; color:rgba(255,255,255,0.6); font-size:0.7rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.2rem; }
+    .contact-form { background:var(--card); border:1px solid var(--border); border-radius:4px; padding:2.5rem; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .form-group { margin-bottom:1rem; }
+    .form-group label { display:block; font-size:0.68rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:0.45rem; }
+    .form-group input, .form-group textarea { width:100%; padding:0.75rem 1rem; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:3px; font-family:'Inter',sans-serif; font-size:0.9rem; color:var(--white); outline:none; transition:border-color 0.2s,background 0.2s; }
+    .form-group input::placeholder, .form-group textarea::placeholder { color:rgba(255,255,255,0.18); }
+    .form-group input:focus, .form-group textarea:focus { border-color:var(--orange); background:rgba(245,166,35,0.04); }
+    .form-group textarea { resize:vertical; min-height:110px; }
+    .form-submit { width:100%; padding:0.95rem; background:var(--orange); color:var(--black); font-family:'Inter',sans-serif; font-weight:700; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; border:none; border-radius:3px; cursor:pointer; margin-top:0.5rem; transition:opacity 0.2s,transform 0.2s; }
+    .form-submit:hover { opacity:0.88; transform:translateY(-1px); }
+
+    /* FOOTER */
+    footer { background:var(--black); padding:3.5rem 5vw 2rem; border-top:1px solid var(--border); }
+    .footer-inner { max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1.8fr 1fr 1fr; gap:4rem; padding-bottom:3rem; border-bottom:1px solid var(--border); }
+    .footer-brand img { height:46px; margin-bottom:1.25rem; display:block; }
+    .footer-brand p { font-size:0.85rem; color:var(--gray); line-height:1.8; max-width:300px; font-weight:300; }
+    .footer-col h4 { font-size:0.68rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--orange); margin-bottom:1.25rem; }
+    .footer-col a, .footer-col span { display:block; font-size:0.85rem; color:var(--gray); text-decoration:none; margin-bottom:0.6rem; transition:color 0.2s; }
+    .footer-col a:hover { color:var(--white); }
+    .footer-bottom { max-width:1280px; margin:2rem auto 0; display:flex; align-items:center; justify-content:space-between; font-size:0.75rem; color:rgba(255,255,255,0.2); }
+    .footer-bottom a { color:rgba(255,255,255,0.2); text-decoration:none; }
+    .footer-bottom a:hover { color:var(--gray); }
+
+    /* MOBILE */
+    @media(max-width:900px){
+      .nav-links{display:none;}
+      .hamburger{display:flex;}
+      .nav-links.open{display:flex;flex-direction:column;position:absolute;top:68px;left:0;right:0;background:rgba(10,10,10,0.98);padding:1.5rem 5vw 2rem;gap:1.5rem;border-bottom:1px solid var(--border);}
+      .about{grid-template-columns:1fr;gap:3.5rem;}
+      .about-image::before,.about-image::after{display:none;}
+      .services-grid{grid-template-columns:1fr;}
+      .contact-inner{grid-template-columns:1fr;gap:3.5rem;}
+      .footer-inner{grid-template-columns:1fr;gap:2.5rem;}
+      .footer-bottom{flex-direction:column;gap:0.5rem;text-align:center;}
+      .stats-bar{grid-template-columns:1fr;}
+      .stat-item{border-right:none;border-bottom:1px solid var(--border);}
+      .stat-item:last-child{border-bottom:none;}
+      .form-row{grid-template-columns:1fr;}
+      .hero-accent{display:none;}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .reveal,.reveal-left,.reveal-right{opacity:1;transform:none;transition:none;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#inicio">
+    <img src="https://static.wixstatic.com/media/968ef8_1a1c058a0b9c4741b01682405df250b8~mv2.png/v1/crop/x_641,y_463,w_5096,h_3600/fill/w_200,h_141,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AZDAKA%20icono%20blanco%202%20(Sin%20Fondo).png" alt="AZDAKA" />
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#contacto" class="nav-cta">Contacto</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-accent"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Logística integral</p>
+    <h1>Envíos<em>rápidos y<br/>seguros.</em></h1>
+    <p class="hero-sub">Soluciones de transporte y distribución nacionales e internacionales. Tu carga, nuestra responsabilidad.</p>
+    <div class="hero-actions">
+      <a href="#contacto" class="btn-primary">Cotiza tu envío</a>
+      <a href="#nosotros" class="btn-ghost">Conoce más</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item reveal delay-1">
+    <span class="stat-number" data-count="100" data-suffix="%">0%</span>
+    <p class="stat-label">Entregas puntuales</p>
+  </div>
+  <div class="stat-item reveal delay-2">
+    <span class="stat-number">24/7</span>
+    <p class="stat-label">Seguimiento en tiempo real</p>
+  </div>
+  <div class="stat-item reveal delay-3">
+    <span class="stat-number">Nac + Int</span>
+    <p class="stat-label">Cobertura de envíos</p>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="nosotros">
+  <div class="about-text">
+    <p class="section-eyebrow reveal">Quiénes somos</p>
+    <h2 class="section-title reveal delay-1">Comprometidos<br/>con la excelencia</h2>
+    <div class="about-divider reveal delay-2"><div class="about-divider-line"></div></div>
+    <p class="reveal delay-2">Somos una empresa de logística dedicada a ofrecer soluciones integrales para tus envíos. Nuestro compromiso es brindarte un servicio confiable y eficiente que se adapte a tus necesidades.</p>
+    <p class="reveal delay-3">Con base en Meoqui, Chihuahua, operamos rutas nacionales e internacionales garantizando seguridad y puntualidad en cada entrega.</p>
+    <a href="#contacto" class="btn-primary reveal delay-4">Contáctanos</a>
+  </div>
+  <div class="about-image reveal-right">
+    <img src="https://static.wixstatic.com/media/11062b_d2d01247fc75405591814403f1351673~mv2.jpg/v1/fill/w_800,h_600,al_c,q_85,usm_0.33_1.00_0.00,enc_avif,quality_auto/11062b_d2d01247fc75405591814403f1351673~mv2.jpg" alt="Transporte AZDAKA" />
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="servicios">
+  <div class="services-inner">
+    <div class="services-header">
+      <p class="section-eyebrow reveal">Lo que hacemos</p>
+      <h2 class="section-title reveal delay-1">Nuestros servicios</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal delay-1">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="https://static.wixstatic.com/media/11062b_d2d01247fc75405591814403f1351673~mv2.jpg/v1/fill/w_800,h_450,al_c,q_85,usm_0.33_1.00_0.00,enc_avif,quality_auto/11062b_d2d01247fc75405591814403f1351673~mv2.jpg" alt="Envíos nacionales" />
+        </div>
+        <div class="service-card-body">
+          <p class="service-number">01</p>
+          <h3>Envíos nacionales</h3>
+          <p>Cobertura en toda la República Mexicana con rutas optimizadas, tiempos garantizados y rastreo en tiempo real.</p>
+        </div>
+      </div>
+      <div class="service-card reveal delay-2">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="https://static.wixstatic.com/media/11062b_02913dd132404b868dafc43b5f1d0314~mv2.jpg/v1/fill/w_800,h_450,al_c,q_85,usm_0.33_1.00_0.00,enc_avif,quality_auto/11062b_02913dd132404b868dafc43b5f1d0314~mv2.jpg" alt="Envíos internacionales" />
+        </div>
+        <div class="service-card-body">
+          <p class="service-number">02</p>
+          <h3>Envíos internacionales</h3>
+          <p>Logística cross-border con documentación aduanal, seguimiento completo y entrega segura en destino.</p>
+        </div>
+      </div>
+      <div class="service-card reveal delay-3">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="https://static.wixstatic.com/media/968ef8_84851fedbc234826911e5b6eee324f04f000.jpg/v1/fill/w_800,h_450,al_c,q_85,usm_0.33_1.00_0.00,enc_avif,quality_auto/968ef8_84851fedbc234826911e5b6eee324f04f000.jpg" alt="Distribución y almacén" />
+        </div>
+        <div class="service-card-body">
+          <p class="service-number">03</p>
+          <h3>Distribución y almacén</h3>
+          <p>Almacenamiento temporal y distribución de última milla para empresas de cualquier tamaño.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Envíos nacionales <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Envíos internacionales <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Logística confiable <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Distribución y almacén <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Rastreo en tiempo real <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Seguridad garantizada <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Envíos nacionales <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Envíos internacionales <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Logística confiable <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Distribución y almacén <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Rastreo en tiempo real <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Seguridad garantizada <span class="marquee-dot">◆</span></span>
+  </div>
+</div>
+
+<!-- TESTIMONIAL CAROUSEL -->
+<section class="testimonial">
+  <div class="testimonial-header reveal">
+    <p class="section-eyebrow" style="justify-content:center;">Clientes que confían en nosotros</p>
+    <h2 class="section-title">Lo que dicen</h2>
+  </div>
+  <div class="testimonial-track-wrap reveal delay-2">
+    <div class="t-progress"><div class="t-progress-bar" id="tProgress"></div></div>
+    <div class="testimonial-track" id="testimonialTrack">
+
+      <div class="t-slide active">
+        <span class="quote-mark">"</span>
+        <blockquote>Siempre entregan a tiempo y con el cuidado necesario para <em>nuestros productos.</em></blockquote>
+        <div class="t-author"><div class="t-line"></div><span class="t-name">PepsiCo México</span><div class="t-line"></div></div>
+      </div>
+
+      <div class="t-slide">
+        <span class="quote-mark">"</span>
+        <blockquote>AZDAKA transformó nuestra cadena de distribución. <em>Eficiencia y confianza</em> en cada envío.</blockquote>
+        <div class="t-author"><div class="t-line"></div><span class="t-name">Cliente — Sector Industrial</span><div class="t-line"></div></div>
+      </div>
+
+      <div class="t-slide">
+        <span class="quote-mark">"</span>
+        <blockquote>El rastreo en tiempo real nos da <em>total tranquilidad.</em> No cambiaríamos a AZDAKA por nada.</blockquote>
+        <div class="t-author"><div class="t-line"></div><span class="t-name">Cliente — Sector Retail</span><div class="t-line"></div></div>
+      </div>
+
+      <div class="t-slide">
+        <span class="quote-mark">"</span>
+        <blockquote>Excelente servicio internacional. Cumplieron con los tiempos aduanales <em>sin ningún contratiempo.</em></blockquote>
+        <div class="t-author"><div class="t-line"></div><span class="t-name">Cliente — Exportaciones</span><div class="t-line"></div></div>
+      </div>
+
+    </div>
+    <div class="t-dots" id="tDots"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contacto">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <p class="section-eyebrow reveal">Hablemos</p>
+      <h2 class="section-title reveal delay-1">Solicita una<br/>cotización</h2>
+      <br/>
+
+      <div class="contact-detail reveal delay-3">
+        <div class="c-icon">✉️</div>
+        <div class="c-text"><strong>Correo</strong>contacto@azdaka.com</div>
+      </div>
+
+    </div>
+    <div class="contact-form reveal-right">
+      <form id="contactForm">
+        <div class="form-row">
+          <div class="form-group"><label>Nombre</label><input type="text" placeholder="Tu nombre" /></div>
+          <div class="form-group"><label>Apellido</label><input type="text" placeholder="Tu apellido" /></div>
+        </div>
+        <div class="form-group"><label>Empresa</label><input type="text" placeholder="Nombre de tu empresa" /></div>
+        <div class="form-row">
+          <div class="form-group"><label>Teléfono</label><input type="tel" placeholder="+52 xxx xxx xxxx" /></div>
+          <div class="form-group"><label>Email</label><input type="email" placeholder="tu@correo.com" /></div>
+        </div>
+        <div class="form-group"><label>Mensaje</label><textarea placeholder="Cuéntanos sobre tu envío..."></textarea></div>
+        <button type="submit" class="form-submit">Enviar mensaje</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="https://static.wixstatic.com/media/968ef8_1a1c058a0b9c4741b01682405df250b8~mv2.png/v1/crop/x_641,y_463,w_5096,h_3600/fill/w_200,h_141,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AZDAKA%20icono%20blanco%202%20(Sin%20Fondo).png" alt="AZDAKA" />
+      <p>Tu aliado estratégico en transporte y distribución. Envíos nacionales e internacionales con rapidez, seguridad y seguimiento.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navegación</h4>
+      <a href="#inicio">Inicio</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+
+      <span>contacto@azdaka.com</span>
+
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 AZDAKA Logística. Todos los derechos reservados.</span>
+    <a href="#">Privacidad y términos</a>
+  </div>
+</footer>
+
+<script>
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Intersection Observer — reveal classes
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // trigger orange divider line inside
+        const line = entry.target.querySelector('.about-divider-line');
+        if (line) line.classList.add('visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => obs.observe(el));
+
+  // Number counter for stats
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    const suffix = el.dataset.suffix || '';
+    const cObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          let start = null;
+          const dur = 1600;
+          const step = (ts) => {
+            if (!start) start = ts;
+            const p = Math.min((ts - start) / dur, 1);
+            const ease = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.floor(ease * target) + suffix;
+            if (p < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+          cObs.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    cObs.observe(el);
+  });
+
+  // Testimonial carousel
+  (function() {
+    const slides = document.querySelectorAll('.t-slide');
+    const dotsWrap = document.getElementById('tDots');
+    const progressBar = document.getElementById('tProgress');
+    let current = 0;
+    let timer = null;
+
+    // Build dots
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 't-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(dot);
+    });
+
+    function getDots() { return dotsWrap.querySelectorAll('.t-dot'); }
+
+    function goTo(next) {
+      if (next === current) return;
+      const prev = current;
+      slides[prev].classList.add('exit-left');
+      slides[prev].classList.remove('active');
+      slides[next].classList.add('active');
+      getDots()[prev].classList.remove('active');
+      getDots()[next].classList.add('active');
+      setTimeout(() => slides[prev].classList.remove('exit-left'), 600);
+      current = next;
+      resetProgress();
+    }
+
+    function resetProgress() {
+      const bar = document.getElementById('tProgress').querySelector('.t-progress-bar') || document.createElement('div');
+      // restart animation
+      const b = document.querySelector('.t-progress-bar');
+      b.classList.remove('running');
+      void b.offsetWidth; // reflow
+      b.classList.add('running');
+    }
+
+    function next() { goTo((current + 1) % slides.length); }
+
+    function startTimer() { timer = setInterval(next, 4200); }
+    function stopTimer()  { clearInterval(timer); }
+
+    // pause on hover
+    const wrap = document.querySelector('.testimonial-track-wrap');
+    wrap.addEventListener('mouseenter', stopTimer);
+    wrap.addEventListener('mouseleave', () => { stopTimer(); startTimer(); });
+
+    // Init
+    resetProgress();
+    startTimer();
+  })();
+
+  // Form feedback
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('.form-submit');
+    btn.textContent = '¡Mensaje enviado!';
+    btn.style.background = '#27ae60';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = 'Enviar mensaje';
+      btn.style.background = '';
+      btn.style.color = '';
+      this.reset();
+    }, 3500);
+  });
+</script>
+</body>
+</html>
